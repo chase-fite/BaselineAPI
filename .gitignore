@@ -1,0 +1,17 @@
+# visual studio files
+.vs/
+
+# user specific files
+*.suo
+*.user
+*.sln.docstates
+
+# build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+
+# nuget packages
+*.nupkg
