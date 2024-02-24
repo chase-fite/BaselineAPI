@@ -16,7 +16,10 @@ namespace BaselineAPI.Controllers
         [HttpGet]
         public JsonResult GetNotes()
         {
-            return new JsonResult(new { id = 1, title = "title", content = "content" });
+            return new JsonResult(new List<object> { 
+                new { id = 1, title = "title", content = "content" },
+                new { id = 2, title = "title 2", content = "content 2" }
+            });
         }
     }
 }
