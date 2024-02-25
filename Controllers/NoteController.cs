@@ -11,7 +11,7 @@ namespace BaselineAPI.Controllers
     public class NoteController : ControllerBase
     {
         /// <summary>
-        /// Gets all note records. 
+        /// Gets all notes. 
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -19,7 +19,12 @@ namespace BaselineAPI.Controllers
         {
             return Ok(NotesDataStore.Current.Notes);
         }
-
+        
+        /// <summary>
+        /// Gets the note with the specified identifier.
+        /// </summary>
+        /// <param name="id">The note identifier.</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public ActionResult<NoteDto> GetNote(int id)
         {
