@@ -18,5 +18,11 @@ namespace BaselineAPI.Controllers
         {
             return new JsonResult(NotesDataStore.Current.Notes);
         }
+
+        [HttpGet("{id}")]
+        public JsonResult GetNote(int id)
+        {
+            return new JsonResult(NotesDataStore.Current.Notes.FirstOrDefault(note => note.Id == id));
+        }
     }
 }
