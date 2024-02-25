@@ -25,7 +25,7 @@ namespace BaselineAPI.Controllers
         /// </summary>
         /// <param name="id">The note identifier.</param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetNote")]
         public ActionResult<NoteDto> GetNote(int id)
         {
             var note = NotesDataStore.Current.Notes.FirstOrDefault(note => note.Id == id);
@@ -36,6 +36,24 @@ namespace BaselineAPI.Controllers
             }
 
             return Ok(note);
+        }
+
+        [HttpPost]
+        public ActionResult<NoteDto> CreateNote(NoteForCreationDto noteForCreation)
+        {
+            // Temporarily calculate the note id to be used on creation for in memory data store
+            var maxNoteId = NotesDataStore.Current.Notes.Max(note => note.Id);
+
+            var newNote = new NoteDto()
+            {
+                Id = ++maxNoteId,
+                Title = noteForCreation.Title,
+                Content = noteForCreation.Content
+            };
+
+            NotesDataStore.Current.Notes.Add(newNote);
+
+            return CreatedAtRoute("GetNote", new { Id = newNote.Id }, newNote);
         }
     }
 }
