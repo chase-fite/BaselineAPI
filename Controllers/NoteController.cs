@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BaselineAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BaselineAPI.Controllers
 {
@@ -14,15 +15,22 @@ namespace BaselineAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetNotes()
+        public ActionResult<IEnumerable<NoteDto>> GetNotes()
         {
-            return new JsonResult(NotesDataStore.Current.Notes);
+            return Ok(NotesDataStore.Current.Notes);
         }
 
         [HttpGet("{id}")]
-        public JsonResult GetNote(int id)
+        public ActionResult<NoteDto> GetNote(int id)
         {
-            return new JsonResult(NotesDataStore.Current.Notes.FirstOrDefault(note => note.Id == id));
+            var note = NotesDataStore.Current.Notes.FirstOrDefault(note => note.Id == id);
+
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(note);
         }
     }
 }
