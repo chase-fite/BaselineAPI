@@ -55,5 +55,20 @@ namespace BaselineAPI.Controllers
 
             return CreatedAtRoute("GetNote", new { Id = newNote.Id }, newNote);
         }
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateNote(int id, NoteForUpdateDto note)
+        {
+            var noteToUpdate = NotesDataStore.Current.Notes.FirstOrDefault(noteToUpdate =>
+            {
+                return noteToUpdate.Id == id;
+            });
+            if (noteToUpdate == null) return NotFound();
+
+            noteToUpdate.Title = note.Title;
+            noteToUpdate.Content = note.Content;
+
+            return NoContent();
+        }
     }
 }
