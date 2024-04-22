@@ -1,4 +1,5 @@
 ﻿using BaselineAPI.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaselineAPI.Controllers
@@ -64,6 +65,30 @@ namespace BaselineAPI.Controllers
 
             noteToUpdate.Title = note.Title;
             noteToUpdate.Content = note.Content;
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")] 
+        public ActionResult PartiallyUpdateNote(int id, JsonPatchDocument<NoteForUpdateDto> patchDocument) 
+        {
+            var noteFromDataStore = NotesDataStore.Current.Notes.FirstOrDefault(n => n.Id == id);
+            if (noteFromDataStore == null) return NotFound();
+
+            var noteToPatch = new NoteForUpdateDto()
+            {
+                Title = noteFromDataStore.Title,
+                Content = noteFromDataStore.Content
+            };
+
+            patchDocument.ApplyTo(noteToPatch, ModelState);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (!TryValidateModel(noteToPatch)) return BadRequest(ModelState);
+
+            noteFromDataStore.Title = noteToPatch.Title;
+            noteFromDataStore.Content = noteToPatch.Content;
 
             return NoContent();
         }
