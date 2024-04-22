@@ -30,10 +30,7 @@ namespace BaselineAPI.Controllers
         {
             var note = NotesDataStore.Current.Notes.FirstOrDefault(note => note.Id == id);
 
-            if (note == null)
-            {
-                return NotFound();
-            }
+            if (note == null) return NotFound();
 
             return Ok(note);
         }
