@@ -92,5 +92,15 @@ namespace BaselineAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteNote(int id)
+        {
+            var note = NotesDataStore.Current.Notes.FirstOrDefault(n => n.Id == id);
+            if (note == null) return NotFound();
+
+            NotesDataStore.Current.Notes.Remove(note);
+            return NoContent();
+        }
     }
 }
